@@ -1,29 +1,64 @@
-# sysaidticketget
+# SysAid Pipeline
 
-SysAid Ticket provides an exasy way to get SysAid System Record tickets sustainably. 
+## Executive Summary
 
-While tested on Incidents and Requests, this should work on any Service Ticket Type.
+The SysAid DOC Pipeline is a phase-driven extraction and transformation 
+engine designed for governance-grade ticket processing.
 
-The project is intentionally built as **standalone** script.
+Validated end-to-end:
+- download → extract → assemble → snapshot
+- Schema-driven CSV export
+- Multiline field preservation
+- ~1K ticket batch validation
+
+---
+
+## Architecture
+
+This system is deterministic and filesystem-backed.
+
+Each run creates an isolated run directory under:
+
+/var/tmp/tickets/<RUN_ID>/
+
+No shared mutable state. No hidden services.
+
+---
+
+## Phases
+
+### Download
+Pulls raw ticket artifacts.
+
+### Extract
+Transforms raw artifacts into structured JSON.
+
+### Assemble
+Normalizes JSON into schema-aligned records.
+
+### Snapshot
+Produces stable CSV export artifacts.
+
+---
+
+## Design Characteristics
+
+- Fail-fast execution
+- Append-only per run
+- Manifest-based tracking
+- Governance-ready outputs
+- No concurrency hazards
 
 ---
 
 ## Important Documentation
 
-- [OVERVIEW](/README.md)  
-  This document. General overview of the tool and abilities.
-
-- [EXAMPLES](doc/EXAMPLES.md)  
-  How to run the code.
-
-- [ENDPOINTS](doc/ENDPOINTS.md)  
-  The web service this script is leveraging
-
-- [AUTHORIZATION](doc/AUTHORIZATION.md)  
-  what to use, and how to obtain the JSESSIONID
-
-- [TROUBLESHOOTING](doc/TROUBLESHOOTING.md)  
-  what to use, and how to obtain the JSESSIONID
+- [ARCHITECTURE](doc/00_Architecture.md)
+- [RUNBOOK](doc/10_Runbook.md)
+- [DATA_MODEL](doc/20_Data_Model.md)
+- [MANIFEST_SPECIFICATION](doc/30_Manifest_Spec.md)
+- [BATCHING_STRATEGY](doc/60_Batching_Strategy.md)
+- [ROADMAP](doc/80_Roadmap.md)
 
 ## Design Principles
 
@@ -33,65 +68,10 @@ The project is intentionally built as **standalone** script.
 
 ---
 
-## Repository Layout
-
-```
-.
-├── README.md
-├── bin
-│   ├── sysaidticketget.ksh
-│   └── sysaidticketget.py
-├── cfg
-│   └── requirements.txt
-└── doc
-    ├── AUTHORIZATION.md
-    ├── ENDPOINTS.md
-    ├── EXAMPLES.md
-    └── TROUBLESHOOTING.md
-
-```
-
----
-
-## Installation
-
-This project intentionally does **not** require packaging or installation.
-
-### Requirements
-
-- Python 3.9+
-
-```bash
-pip install pdfplumber
-```
-
-Clone the repository and run directly.
-
----
-
-## Usage
-
-```bash
-python sysaidpdfview.py --help
-```
-
-| Option              | Description                        |
-|---------------------|------------------------------------|
-| -h, --help          | show this help message and exit |
-| --cookie COOKIE     | JSESSIONID value |
-| --tenant TENANT     | SysAid Tenant Value |
-| --tickets TICKETS   | Ticket, comma list, or file path |
-| --dst DST           | Destination directory |
-| --workers WORKERS   | Specify the number of workers processing tickets |
-| --sleep SLEEP       | Specify time to wait between processing queue items |
-| --verbose           | Specify verbose output |
-
 To Do List:
 ===========
 
 * Add other format outputs.
-* turn this into a packaged module.
-* extend the CLI to handle processing in parallel using workers and queues.
 
 License
 =======
