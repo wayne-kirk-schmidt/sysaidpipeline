@@ -1,0 +1,14 @@
+[
+"TicketType",
+"TicketNumber",
+"Sub Type",
+"Category",
+"Title",
+"Status",
+"Urgency",
+"Priority",
+"Due Date",
+"Assigned to",
+"Admin group",
+"Location"
+]
