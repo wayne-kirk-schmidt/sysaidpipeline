@@ -3,6 +3,7 @@
 "TicketNumber",
 "Sub Type",
 "Category",
+"Impact",
 "Title",
 "Status",
 "Urgency",
